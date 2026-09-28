@@ -424,6 +424,7 @@ async function renderTournament(code) {
   const all = entries.reduce((a, e) => { const r = rec(e); a.v += r.v; a.d += r.d; return a; }, {v:0, d:0});
   const podiums = entries.filter(e => e.rank && e.rank <= 3).length;
   const members = data ? data.members : (t && t.members) || [];
+  const noMatch = members.filter(n => !players.includes(n));
 
   let body = "";
   const pods = entries.filter(e => e.rank && e.rank <= 3 && mine(e)).sort((a, b) => a.rank - b.rank || byComp(a.comp, b.comp));
@@ -482,7 +483,8 @@ async function renderTournament(code) {
     '<section class="thead">' + (liveT ? '<span class="live-tag"><i></i>En direct</span>' : "") +
       "<h1>" + esc(info.name) + "</h1>" +
       '<div class="meta">' + lvlTag(info) + "<span>" + esc(dateRange(info.start, info.end)) + "</span><span>" + esc(info.city) + '</span><a href="' + CORAL(code) + '" target="_blank" rel="noopener">Voir sur Coral ↗</a>' + (info.info ? '<a href="' + esc(info.info) + '" target="_blank" rel="noopener">Dossier (PDF) ↗</a>' : "") + '</div>' +
-      (entries.length ? '<div class="stats"><div class="stat"><b>' + players.length + '</b><span>joueurs LABAF</span></div><div class="stat"><b>' + all.v + "–" + all.d + '</b><span>victoires–défaites</span></div>' + (podiums ? '<div class="stat"><b>' + podiums + "</b><span>podium" + (podiums > 1 ? "s" : "") + "</span></div>" : "") + "</div>" : "") +
+      (entries.length ? '<div class="stats"><div class="stat"><b>' + Math.max(members.length, players.length) + '</b><span>joueurs LABAF</span></div><div class="stat"><b>' + all.v + "–" + all.d + '</b><span>victoires–défaites</span></div>' + (podiums ? '<div class="stat"><b>' + podiums + "</b><span>podium" + (podiums > 1 ? "s" : "") + "</span></div>" : "") + "</div>" : "") +
+    (entries.length && noMatch.length ? '<p class="note">' + esc(noMatch.join(", ")) + (noMatch.length > 1 ? " étaient inscrits mais n'ont" : " était inscrit mais n'a") + " joué aucun match enregistré sur Coral.</p>" : "") +
     "</section>" + body + footer(data && data.updated);
 
   const sel = document.getElementById("player");
