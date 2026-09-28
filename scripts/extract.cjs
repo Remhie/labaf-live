@@ -14,6 +14,8 @@ function extractTournament(CLUB) {
 
   const clubMembership = (p) => (p && p.organizations || []).find((o) => o.organization && o.organization.short_name === CLUB);
   const isMember = (p) => { const m = clubMembership(p); return !!m && m.status === 'active'; };
+  // Joueur réellement engagé : on écarte ceux dont l'inscription au tournoi a été retirée
+  const isEntered = (p) => !(p && p.tournament && p.tournament.status === 'removed');
   const mainClub = (p) => {
     if (!p) return '';
     const places = (p.organizations || []).filter((o) => o.organization && o.organization.geo_type === 'place' && o.status === 'active');
@@ -102,11 +104,11 @@ function extractTournament(CLUB) {
     const c = comps[cp.competition_id];
     (regs[p.id] = regs[p.id] || { name: pName(p), comps: [] }).comps.push(c ? c.name : '?');
   }
-  const members = players.filter(isMember).map((p) => pName(p)).sort();
+  const members = players.filter((p) => isMember(p) && isEntered(p)).map((p) => pName(p)).sort();
 
   // Joueurs du club présents au tournoi mais pas encore rattachés à une catégorie
   for (const p of players) {
-    if (!isMember(p)) continue;
+    if (!isMember(p) || !isEntered(p)) continue;
     if (!Object.values(regs).some((r) => r.name === pName(p))) regs[p.id] = { name: pName(p), comps: [] };
   }
 
