@@ -1,0 +1,60 @@
+name: Mise à jour des tournois
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'   # tournois en cours
+    - cron: '17 */3 * * *'  # toutes les 3 heures : inscriptions de toute la saison
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'live ou full'
+        default: 'full'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Choisir le mode
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then echo "mode=${{ github.event.inputs.mode }}" >> $GITHUB_OUTPUT;
+          elif [ "${{ github.event.schedule }}" = "17 */3 * * *" ]; then echo "mode=full" >> $GITHUB_OUTPUT;
+          else echo "mode=live" >> $GITHUB_OUTPUT; fi
+
+      - name: Y a-t-il quelque chose à lire ?
+        id: plan
+        run: node scripts/update.mjs --plan ${{ steps.mode.outputs.mode }}
+
+      - name: Installer le navigateur
+        if: steps.plan.outputs.need == 'true' || steps.mode.outputs.mode == 'full'
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+
+      - name: Lire Coral
+        if: steps.plan.outputs.need == 'true' || steps.mode.outputs.mode == 'full'
+        run: node scripts/update.mjs ${{ steps.mode.outputs.mode }}
+
+      - name: Enregistrer les nouvelles données
+        run: |
+          git config user.name "labaf-bot"
+          git config user.email "labaf-bot@users.noreply.github.com"
+          git add docs/data
+          if git diff --cached --quiet; then echo "Rien de nouveau."; exit 0; fi
+          git commit -m "Données mises à jour"
+          git pull --rebase
+          git push

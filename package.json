@@ -1,0 +1,13 @@
+{
+  "name": "labaf-live",
+  "private": true,
+  "type": "module",
+  "description": "Suivi en direct des joueurs LABAF Paris dans les tournois Coral",
+  "scripts": {
+    "live": "node scripts/update.mjs live",
+    "full": "node scripts/update.mjs full"
+  },
+  "dependencies": {
+    "playwright": "1.47.2"
+  }
+}

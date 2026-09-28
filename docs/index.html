@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LABAF Live</title>
+<link rel="icon" href="logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap">
+<style>
+:root{
+  --bg:#FFFFFF; --ink:#0B0B0B; --ink-2:#3A3A3A; --muted:#767676; --line:#E4E4E4; --soft:#F3F3F3;
+  --live:#E3120B; --live-soft:#FDECEB; --logo-filter:none;
+  --gold:#C9A227; --silver:#9AA0A6; --bronze:#B06A34;
+  --lv-national:#1D4ED8; --lv-regional:#15803D; --lv-loisir:#B45309; --lv-champ:#7E22CE;
+  --c-so:#2563EB; --c-sd:#DB2777; --c-do:#0F766E; --c-dd:#C2410C; --c-mx:#7C3AED; --c-sn:#64748B; --c-jn:#CA8A04; --c-x:#6B7280;
+  --font:"Archivo","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0B0B0B; --ink:#F2F2F2; --ink-2:#C9C9C9; --muted:#8C8C8C; --line:#262626; --soft:#161616;
+    --live:#FF4A3D; --live-soft:#2A1210; --logo-filter:invert(1);
+    --lv-national:#7EA6FF; --lv-regional:#5FCB8A; --lv-loisir:#F2B04C; --lv-champ:#C39BF5;
+    --c-so:#7AA7FF; --c-sd:#F48BBF; --c-do:#4FC7B5; --c-dd:#FB9A62; --c-mx:#B79CFF; --c-sn:#A3AFBF; --c-jn:#EDC24B; --c-x:#9CA3AF;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0B0B0B; --ink:#F2F2F2; --ink-2:#C9C9C9; --muted:#8C8C8C; --line:#262626; --soft:#161616;
+  --live:#FF4A3D; --live-soft:#2A1210; --logo-filter:invert(1);
+  --lv-national:#7EA6FF; --lv-regional:#5FCB8A; --lv-loisir:#F2B04C; --lv-champ:#C39BF5;
+  --c-so:#7AA7FF; --c-sd:#F48BBF; --c-do:#4FC7B5; --c-dd:#FB9A62; --c-mx:#B79CFF; --c-sn:#A3AFBF; --c-jn:#EDC24B; --c-x:#9CA3AF;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--font);font-stretch:100%;padding-inline:16px;padding-block:20px 64px;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;color:inherit}
+.wrap{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:36px}
+.num{font-variant-numeric:tabular-nums}
+.cond{font-stretch:75%}
+
+/* En-tête */
+.top{display:flex;align-items:center;gap:14px}
+.top img{width:52px;height:52px;filter:var(--logo-filter);flex:none}
+.top .club{font-weight:800;font-stretch:112%;letter-spacing:.02em;font-size:15px;line-height:1.1}
+.top .sub{color:var(--muted);font-size:13px}
+.top .upd{margin-left:auto;text-align:right;color:var(--muted);font-size:12px;line-height:1.3}
+.back{font-size:14px;font-weight:600;text-decoration:none;display:inline-flex;gap:6px;align-items:center}
+.back:hover{text-decoration:underline}
+h1{font-weight:900;font-stretch:75%;font-size:clamp(40px,9vw,72px);line-height:.92;letter-spacing:-.01em;margin:0;text-transform:uppercase;text-wrap:balance}
+h2{font-weight:800;font-stretch:75%;font-size:26px;line-height:1;margin:0;text-transform:uppercase;letter-spacing:.01em}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.section{display:flex;flex-direction:column;gap:14px}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:8px}
+.section-head .count{color:var(--muted);font-size:13px}
+
+/* Tags */
+.lvl{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:3px;white-space:nowrap;line-height:1.2;color:var(--c,var(--muted));background:color-mix(in srgb,var(--c,var(--muted)) 12%,transparent)}
+.lvl::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c)}
+.national{--c:var(--lv-national)} .regional{--c:var(--lv-regional)} .loisir{--c:var(--lv-loisir)} .championnat,.clubs{--c:var(--lv-champ)} .autre{--c:var(--muted)}
+.club-pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;white-space:nowrap}
+.club-pill i{width:8px;height:8px;border-radius:50%;background:var(--ink);display:inline-block}
+.live-tag{display:inline-flex;align-items:center;gap:7px;color:var(--live);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.live-tag i{width:8px;height:8px;border-radius:50%;background:var(--live);display:inline-block;animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.live-tag i{animation:none}}
+
+/* À la une */
+.hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.feature{display:flex;flex-direction:column;gap:10px;padding:18px;border:1.5px solid var(--line);border-top:5px solid var(--c,var(--ink));border-radius:4px;text-decoration:none;min-height:150px}
+.feature:hover{background:var(--soft)}
+.feature.live{border-color:var(--live);border-top-color:var(--live);background:var(--live-soft)}
+.feature .t{font-weight:800;font-stretch:80%;font-size:24px;line-height:1.05;text-transform:uppercase}
+.feature .fm{color:var(--ink-2);font-size:14px}
+.feature .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px}
+.feature .go{font-weight:700}
+
+/* Filtres */
+.filters{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding-block:10px;z-index:3;border-bottom:1px solid var(--line)}
+.seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:4px;overflow:hidden;flex-wrap:wrap}
+.seg button{border:0;background:transparent;padding:6px 11px;font-size:13px;font-weight:600;cursor:pointer}
+.seg button+button{border-left:1.5px solid var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.seg button{display:inline-flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--c,var(--muted));display:inline-block}
+.check{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;cursor:pointer;user-select:none}
+.check input{width:16px;height:16px;accent-color:var(--ink);margin:0}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+/* Liste des tournois */
+.month{display:flex;flex-direction:column}
+.month h3{margin:18px 0 4px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.row{display:grid;grid-template-columns:62px 1fr auto;gap:14px;align-items:center;padding:12px 4px 12px 12px;border-top:1px solid var(--line);text-decoration:none;box-shadow:inset 3px 0 0 var(--c,var(--line))}
+.row:hover{background:var(--soft)}
+.row.dim{color:var(--muted)}
+.row.dim{box-shadow:inset 3px 0 0 color-mix(in srgb,var(--c) 45%,transparent)}
+.row.dim .date b{color:var(--muted)}
+.date{line-height:1;text-align:left}
+.date b{display:block;font-weight:900;font-stretch:75%;font-size:30px;font-variant-numeric:tabular-nums}
+.date span{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
+.row .name{font-weight:700;font-size:16px;line-height:1.25}
+.row .where{color:var(--muted);font-size:13px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:3px}
+.row .names{font-size:13px;margin-top:4px;color:var(--ink-2)}
+.row .names::before{content:"LABAF · ";font-weight:800;font-size:11px;letter-spacing:.08em;color:var(--ink)}
+.row .right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.row.is-live{box-shadow:inset 3px 0 0 var(--live);background:var(--live-soft)}
+.empty{color:var(--muted);padding:18px 0}
+.more{align-self:flex-start;border:1.5px solid var(--ink);background:transparent;border-radius:4px;padding:8px 14px;font-weight:700;font-size:13px;cursor:pointer;margin-top:10px}
+.more:hover{background:var(--ink);color:var(--bg)}
+
+/* Fiche tournoi */
+.thead{display:flex;flex-direction:column;gap:12px}
+.thead .meta{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:center;color:var(--ink-2);font-size:15px}
+.thead .meta a{font-weight:700}
+.stats{display:flex;gap:28px;flex-wrap:wrap;padding-top:4px}
+.stat b{display:block;font-weight:900;font-stretch:75%;font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+.matchlist{display:flex;flex-direction:column}
+.m{display:grid;grid-template-columns:108px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.m .when{font-size:12px;color:var(--muted);line-height:1.3}
+.m .when b{display:block;color:var(--ink);font-size:13px}
+.m .who{line-height:1.35}
+.m .who .us{font-weight:700}
+.m .who .vs{color:var(--muted);font-size:13px}
+.m .who small{color:var(--muted);font-size:12px}
+.m .sc{font-weight:800;font-stretch:80%;font-size:18px;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.m.live{background:var(--live-soft);box-shadow:inset 3px 0 0 var(--live);padding-inline:10px}
+.m.live .when b{color:var(--live)}
+.m .who .cchip{margin-top:2px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+select{font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1.5px solid var(--ink);border-radius:4px;padding:7px 10px;max-width:100%}
+.comp{--c:var(--ink);display:flex;flex-direction:column;gap:8px}
+.comp-title h3{display:flex;align-items:center;gap:10px}
+.comp-title h3::before{content:"";width:12px;height:12px;border-radius:2px;background:var(--c)}
+.comp details.e{border-top-color:var(--c)}
+.cchip{--c:var(--muted);display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--c);white-space:nowrap}
+.cchip::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--c)}
+.comp-title{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-top:8px}
+.comp-title h3{margin:0;font-size:20px;font-weight:800;font-stretch:80%;text-transform:uppercase}
+.comp-title span{color:var(--muted);font-size:13px}
+details.e{border-top:1.5px solid var(--ink)}
+details.e:last-child{border-bottom:1px solid var(--line)}
+details.e summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:12px 0}
+details.e summary::-webkit-details-marker{display:none}
+.rank{font-weight:900;font-stretch:75%;font-size:32px;line-height:1;font-variant-numeric:tabular-nums}
+.rank sup{font-size:.45em;vertical-align:.9em;margin-left:1px}
+.medal{--m:var(--bronze);display:inline-flex;align-items:center;justify-content:center;flex:none;width:46px;height:46px;border-radius:50%;background:var(--m);color:#fff;font-weight:900;font-stretch:75%;font-size:24px;line-height:1;box-shadow:inset 0 0 0 3px color-mix(in srgb,#fff 35%,transparent),0 1px 0 color-mix(in srgb,var(--m) 60%,#000)}
+.medal sup{font-size:.5em;vertical-align:.7em}
+.medal.g1{--m:var(--gold)} .medal.g2{--m:var(--silver)} .medal.g3{--m:var(--bronze)}
+details.e.pod{background:color-mix(in srgb,var(--pm) 10%,transparent);border-top-width:3px;border-top-color:var(--pm)}
+details.e.pod summary{padding-inline:10px}
+details.e.pod .tbl{padding-inline:10px}
+.pod.g1{--pm:var(--gold)} .pod.g2{--pm:var(--silver)} .pod.g3{--pm:var(--bronze)}
+.pod-label{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:color-mix(in srgb,var(--pm) 75%,var(--ink));margin-top:4px}
+.podiums{display:flex;flex-direction:column;gap:8px}
+.podline{display:grid;grid-template-columns:46px 1fr;gap:12px;align-items:center;padding:10px;border-radius:4px;background:color-mix(in srgb,var(--pm) 12%,transparent);box-shadow:inset 3px 0 0 var(--pm)}
+.podline small{display:block;color:var(--muted);font-size:13px}
+.team{font-weight:700;line-height:1.3}
+.team .o{font-weight:400;color:var(--ink-2)}
+.team small{display:block;font-weight:400;color:var(--muted);font-size:13px;margin-top:2px}
+.rec{display:flex;gap:4px;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums}
+.rec span{padding:2px 6px;border-radius:3px}
+.rec .v{background:var(--ink);color:var(--bg)}
+.rec .d{border:1.5px solid var(--ink);padding:.5px 4.5px}
+.rec .n{background:var(--soft)}
+.tbl{overflow-x:auto;padding-bottom:10px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td{padding:7px 8px 7px 0;border-top:1px solid var(--line);vertical-align:top}
+td.ph{color:var(--muted);white-space:nowrap;font-size:13px}
+td.sc{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+td.r{width:34px;text-align:right}
+td.r span{display:inline-block;width:24px;text-align:center;border-radius:3px;font-weight:800;font-size:12px;padding:2px 0}
+td.r .V{background:var(--ink);color:var(--bg)}
+td.r .D{border:1.5px solid var(--ink)}
+td.r .N{background:var(--soft)}
+td.r .L{background:var(--live);color:#fff}
+td.t{color:var(--muted);white-space:nowrap;font-size:12px;text-align:right}
+.regs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:0 24px}
+.regs div{padding:10px 0;border-top:1px solid var(--line)}
+.regs b{display:block}
+.regs span{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px}
+.modal{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.modal li{padding:9px 0;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center}
+.modal b{min-width:110px}
+.muted{color:var(--muted);font-size:12px}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-block;border:1.5px solid var(--ink);border-radius:4px;padding:9px 14px;font-weight:700;font-size:14px;text-decoration:none}
+.btn:hover{background:var(--soft)}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn.primary:hover{opacity:.85;background:var(--ink)}
+.note{font-size:13px;color:var(--muted);border-left:3px solid var(--ink);padding:4px 0 4px 12px}
+footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px;line-height:1.6}
+@media (max-width:560px){
+  .filters{gap:8px;padding-block:8px}
+  .seg{flex-wrap:nowrap;overflow-x:auto;border:0;border-radius:0;gap:6px;width:100%;scrollbar-width:none;margin-inline:-16px;padding-inline:16px;width:calc(100% + 32px)}
+  .seg::-webkit-scrollbar{display:none}
+  .seg button,.seg button+button{flex:none;border:1.5px solid var(--ink);border-radius:999px;padding:6px 12px}
+  .check{font-size:12.5px}
+  .row{grid-template-columns:48px 1fr;gap:10px}
+  .row .right{grid-column:2;flex-direction:row;align-items:center;justify-content:flex-start}
+  .date b{font-size:26px}
+  .m{grid-template-columns:1fr auto}
+  .m .when{grid-column:1/3;display:flex;gap:8px}
+  .m .when b{display:inline}
+  td.t{display:none}
+  details.e summary{grid-template-columns:48px 1fr}
+  .rec{grid-column:2}
+  .top .upd{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <p class="empty">Chargement des tournois…</p>
+</div>
+
+<script>
+(function(){
+const LOGO = "logo.webp";
+const CORAL = code => "https://app.tablesoccer.org/p/" + code + "/";
+const REFRESH_MS = 60000;
+
+const LEVEL_LABEL = {national:"National", regional:"Régional", loisir:"Loisir", championnat:"Championnat", clubs:"Clubs", autre:"Autre"};
+const LEVEL_FILTERS = [["all","Tous"],["national","National"],["regional","Régional"],["loisir","Loisir"],["champ","Championnats"]];
+const COMP_DEF = {
+  so:{fr:"Simple open", o:1}, sd:{fr:"Simple dames", o:2}, do:{fr:"Double open", o:3}, dd:{fr:"Double dames", o:4},
+  mx:{fr:"Double mixte", o:5}, ss:{fr:"Simple seniors", o:6}, ds:{fr:"Double seniors", o:7}, sj:{fr:"Simple juniors", o:8}, dj:{fr:"Double juniors", o:9}
+};
+const compKey = n => {
+  const x = String(n || "").toLowerCase();
+  const single = /simple|single/.test(x), dbl = /double/.test(x);
+  if (/mix/.test(x)) return "mx";
+  if (/women|dame|fémin|femin|ladies/.test(x)) return single ? "sd" : dbl ? "dd" : null;
+  if (/senior|over 50|\+ ?50|vétéran|veteran/.test(x)) return single ? "ss" : dbl ? "ds" : null;
+  if (/junior|under|- ?19|jeune/.test(x)) return single ? "sj" : dbl ? "dj" : null;
+  if (single) return "so";
+  if (dbl) return "do";
+  return null;
+};
+const compFr = n => { const k = compKey(n); return k ? COMP_DEF[k].fr : n; };
+const compRank = n => { const k = compKey(n); return k ? COMP_DEF[k].o : 99; };
+const byComp = (a, b) => compRank(a) - compRank(b) || String(a).localeCompare(String(b));
+const CVAR = {so:"so", sd:"sd", do:"do", dd:"dd", mx:"mx", ss:"sn", ds:"sn", sj:"jn", dj:"jn"};
+const compVar = n => "var(--c-" + (CVAR[compKey(n)] || "x") + ")";
+const isSingles = n => /simple|single/i.test(n);
+const compChip = n => '<span class="cchip" style="--c:' + compVar(n) + '">' + esc(compFr(n)) + "</span>";
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let INDEX = null;
+const state = {level:"all", onlyClub:false, showPast:false, player:""};
+try { const s = JSON.parse(localStorage.getItem("labaf-filters") || "{}"); if (s.level) state.level = s.level; if (s.onlyClub) state.onlyClub = true; } catch(e) {}
+const saveFilters = () => { try { localStorage.setItem("labaf-filters", JSON.stringify({level:state.level, onlyClub:state.onlyClub})); } catch(e) {} };
+
+/* ---------- Dates (Coral donne les heures en UTC) ---------- */
+const TZ = "Europe/Paris";
+const todayParis = () => new Intl.DateTimeFormat("en-CA", {timeZone:TZ}).format(new Date());
+const d = iso => new Date(iso + "T12:00:00Z");
+const fmt = (iso, opts) => new Intl.DateTimeFormat("fr-FR", Object.assign({timeZone:"UTC"}, opts)).format(d(iso));
+const dateRange = (s, e) => {
+  if (!e || e === s) return fmt(s, {weekday:"long", day:"numeric", month:"long"});
+  if (s.slice(0,7) === e.slice(0,7)) return fmt(s, {day:"numeric"}) + "–" + fmt(e, {day:"numeric", month:"long"});
+  return fmt(s, {day:"numeric", month:"short"}) + " – " + fmt(e, {day:"numeric", month:"short"});
+};
+const utc = s => s ? new Date(s.replace(" ", "T") + ":00Z") : null;
+const hour = s => { const x = utc(s); return x ? new Intl.DateTimeFormat("fr-FR", {timeZone:TZ, hour:"2-digit", minute:"2-digit"}).format(x) : ""; };
+const dayShort = s => { const x = utc(s); return x ? new Intl.DateTimeFormat("fr-FR", {timeZone:TZ, weekday:"short"}).format(x) : ""; };
+const ago = iso => {
+  if (!iso) return "";
+  const min = Math.round((Date.now() - new Date(iso)) / 60000);
+  if (min < 1) return "à l'instant";
+  if (min < 60) return "il y a " + min + " min";
+  const h = Math.round(min / 60);
+  if (h < 24) return "il y a " + h + " h";
+  return "le " + new Intl.DateTimeFormat("fr-FR", {timeZone:TZ, day:"numeric", month:"short", hour:"2-digit", minute:"2-digit"}).format(new Date(iso));
+};
+const isLive = (t, today) => t.status !== "finished" && t.start <= today && today <= t.end;
+
+/* ---------- Données ---------- */
+async function getJson(url) {
+  const embedded = window.__LABAF_DATA__;
+  if (embedded) { const key = url.replace(/^.*data\//, "").replace(/\?.*$/, ""); if (key in embedded) return embedded[key]; throw new Error("absent"); }
+  const r = await fetch(url + "?t=" + Date.now(), {cache:"no-store"});
+  if (!r.ok) throw new Error(r.status);
+  return r.json();
+}
+
+/* ---------- Petits morceaux ---------- */
+const lvlTag = t => '<span class="lvl ' + t.level + '">' + (LEVEL_LABEL[t.level] || t.level) + "</span>";
+const clubPill = n => n ? '<span class="club-pill"><i></i>' + n + " LABAF</span>" : "";
+const header = sub => '<header class="top"><img src="' + LOGO + '" alt="Logo LABAF"><div><div class="club">LABAF PARIS</div><div class="sub">' + sub + '</div></div><div class="upd">Mis à jour<br>' + esc(ago(INDEX && INDEX.updated)) + "</div></header>";
+
+/* ---------- Accueil ---------- */
+function renderHome() {
+  const today = todayParis();
+  const all = INDEX.tournaments.slice().sort((a, b) => a.start.localeCompare(b.start) || a.name.localeCompare(b.name));
+  const live = all.filter(t => isLive(t, today));
+  const nClub = t => (t.members || []).length;
+
+  const next = all.filter(t => t.start > today && nClub(t)).slice(0, 2);
+  const last = all.filter(t => t.end < today && nClub(t)).slice(-1);
+  const features = live.length ? live : [...last, ...next].slice(0, 3);
+
+  const featureCard = t => {
+    const isL = isLive(t, today), past = t.end < today;
+    const top = isL ? '<span class="live-tag"><i></i>En direct</span>' : '<span class="eyebrow">' + (past ? "Dernier tournoi" : "Prochain tournoi LABAF") + "</span>";
+    return '<a class="feature ' + t.level + (isL ? " live" : "") + '" href="#' + t.code + '">' + top +
+      '<div class="t">' + esc(t.name) + '</div><div class="fm">' + esc(dateRange(t.start, t.end)) + " · " + esc(t.city) + "</div>" +
+      '<div class="foot">' + lvlTag(t) + clubPill(nClub(t)) + '<span class="go">' + (isL ? "Suivre le direct →" : past ? "Voir les résultats →" : "Voir les inscrits →") + "</span></div></a>";
+  };
+
+  const pass = t => {
+    if (state.onlyClub && !nClub(t)) return false;
+    if (state.level === "all") return true;
+    if (state.level === "champ") return t.level === "championnat" || t.level === "clubs";
+    return t.level === state.level;
+  };
+  const upcoming = all.filter(t => t.end >= today && pass(t));
+  const past = all.filter(t => t.end < today && pass(t)).reverse();
+
+  const row = (t, dim) => {
+    const isL = isLive(t, today);
+    const n = nClub(t);
+    return '<a class="row ' + t.level + (dim ? " dim" : "") + (isL ? " is-live" : "") + '" href="#' + t.code + '">' +
+      '<div class="date"><b>' + fmt(t.start, {day:"2-digit"}) + "</b><span>" + fmt(t.start, {weekday:"short"}).replace(".", "") + "</span></div>" +
+      '<div><div class="name">' + esc(t.name) + '</div><div class="where">' + esc(t.city || "Lieu à préciser") + (t.end !== t.start ? " · " + esc(dateRange(t.start, t.end)) : "") + "</div></div>" +
+      '<div class="right">' + (isL ? '<span class="live-tag"><i></i>En direct</span>' : "") + lvlTag(t) + (n ? clubPill(n) : "") + "</div></a>";
+  };
+  const byMonth = (list, dim) => {
+    if (!list.length) return '<p class="empty">Aucun tournoi pour ce filtre.</p>';
+    const groups = [];
+    for (const t of list) {
+      const key = t.start.slice(0, 7);
+      if (!groups.length || groups[groups.length - 1].key !== key) groups.push({key, items:[]});
+      groups[groups.length - 1].items.push(t);
+    }
+    return groups.map(g => '<div class="month"><h3>' + fmt(g.key + "-15", {month:"long", year:"numeric"}) + "</h3>" + g.items.map(t => row(t, dim)).join("") + "</div>").join("");
+  };
+
+  const shownPast = state.showPast ? past : past.slice(0, 6);
+  document.title = "LABAF Live";
+  app.innerHTML =
+    header("Suivi des tournois") +
+    '<section class="section"><h1>' + (live.length ? "En direct" : "Tournois") + "</h1>" +
+    '<div class="hero">' + features.map(featureCard).join("") + "</div></section>" +
+    '<section class="section" id="liste">' +
+      '<div class="filters"><div class="seg" role="group" aria-label="Niveau">' +
+        LEVEL_FILTERS.map(([k, l]) => '<button type="button" data-level="' + k + '" aria-pressed="' + (state.level === k) + '">' + (k !== "all" ? '<i class="dot ' + (k === "champ" ? "championnat" : k) + '"></i>' : "") + l + "</button>").join("") +
+      '</div><label class="check"><input type="checkbox" id="only-club"' + (state.onlyClub ? " checked" : "") + "> Seulement avec des joueurs LABAF</label></div>" +
+      '<div class="section-head"><h2>À venir</h2><span class="count">' + upcoming.length + " tournoi" + (upcoming.length > 1 ? "s" : "") + "</span></div>" +
+      byMonth(upcoming, false) +
+    "</section>" +
+    '<section class="section"><div class="section-head"><h2>Terminés</h2><span class="count">' + past.length + " cette saison</span></div>" +
+      byMonth(shownPast, true) +
+      (past.length > shownPast.length ? '<button type="button" class="more" id="more-past">Voir les ' + (past.length - shownPast.length) + " autres</button>" : "") +
+    "</section>" +
+    footer();
+
+  app.querySelectorAll("[data-level]").forEach(b => b.onclick = () => { state.level = b.dataset.level; saveFilters(); renderHome(); });
+  const oc = document.getElementById("only-club"); oc.onchange = () => { state.onlyClub = oc.checked; saveFilters(); renderHome(); };
+  const mp = document.getElementById("more-past"); if (mp) mp.onclick = () => { state.showPast = true; renderHome(); };
+}
+
+/* ---------- Fiche tournoi ---------- */
+function roundLabel(m) {
+  const r = m.round, max = m.maxRound || 0;
+  if (m.kind === "Q") return "Qualif. " + r;
+  const pre = m.kind === "C" ? "Consolante · " : "";
+  if (r < 0) return pre + "Match 3e place";
+  const k = max - r;
+  const names = ["Finale", "Demi-finale", "Quart de finale", "8e de finale", "16e de finale", "32e de finale", "64e de finale"];
+  if (max >= 2 && k >= 0 && k < names.length) return pre + names[k];
+  return pre + "Tour " + r;
+}
+const scoreText = sc => !sc ? "" : sc.us.map((u, i) => u + "-" + sc.them[i]).join("  ");
+const who = arr => arr.map(p => (p.member ? "<b>" : "") + esc(p.name) + (p.member ? "</b>" : "") + (p.club && !p.member ? " <small>" + esc(p.club) + "</small>" : "")).join(" / ");
+const teamNames = e => e.team.map(p => p.member ? "<span>" + esc(p.name) + "</span>" : '<span class="o">' + esc(p.name) + "</span>").join(" &amp; ");
+const rec = e => ({v:e.matches.filter(m => m.res === "V").length, n:e.matches.filter(m => m.res === "N").length, d:e.matches.filter(m => m.res === "D").length});
+const rankHtml = r => r ? r + "<sup>" + (r === 1 ? "er" : "e") + "</sup>" : "–";
+const MEDAL_NAME = {1:"Médaille d'or · 1re place", 2:"Médaille d'argent · 2e place", 3:"Médaille de bronze · 3e place"};
+const medal = r => '<span class="medal g' + r + '" aria-label="' + r + (r === 1 ? "re" : "e") + ' place">' + r + "<sup>" + (r === 1 ? "er" : "e") + "</sup></span>";
+
+function statusLine(e) {
+  const liveM = e.matches.find(m => m.status === "live");
+  if (liveM) return "En train de jouer : " + roundLabel(liveM).toLowerCase();
+  const up = e.matches.find(m => m.status === "upcoming");
+  if (up) return "Prochain match : " + roundLabel(up).toLowerCase();
+  if (e.rank && e.rank <= 3) return "Podium : " + e.rank + (e.rank === 1 ? "er" : "e") + " sur " + e.n;
+  const out = [...e.matches].reverse().find(m => m.res === "D" && m.kind !== "Q");
+  if (out) return "Éliminé en " + roundLabel(out).toLowerCase() + " par " + out.opp.map(p => p.name).join(" / ");
+  return "";
+}
+
+function matchRow(m, e) {
+  const team = e.team.filter(p => p.member).map(p => p.name).join(" & ");
+  const partner = e.team.filter(p => !p.member).map(p => p.name).join(" & ");
+  const when = m.status === "live" ? "<b>En cours</b>" + (m.table ? "Table " + esc(m.table) : "")
+    : "<b>" + (m.at ? esc(hour(m.at)) : "Horaire à venir") + "</b>" + (m.table ? "Table " + esc(m.table) : "");
+  return '<div class="m ' + m.status + '"><div class="when">' + when + '</div>' +
+    '<div class="who"><span class="us">' + esc(team) + "</span>" + (partner ? ' <small>avec ' + esc(partner) + "</small>" : "") +
+    '<br><span class="vs">contre ' + who(m.opp) + "</span><br>" + compChip(e.comp) + ' <span class="vs">' + esc(roundLabel(m).toLowerCase()) + "</span></div>" +
+    '<div class="sc">' + esc(scoreText(m.score)) + "</div></div>";
+}
+
+async function renderTournament(code) {
+  const t = INDEX.tournaments.find(x => x.code === code);
+  let data = null;
+  try { data = await getJson("data/t/" + code + ".json"); } catch(e) {}
+  if (!t && !data) { location.hash = ""; return; }
+  const today = todayParis();
+  const info = t || {name:data.name, start:data.start.slice(0,10), end:data.end.slice(0,10), city:"", level:"autre", status:data.status};
+  const liveT = isLive(info, today);
+  document.title = info.name + " · LABAF Live";
+
+  const entries = data ? data.entries : [];
+  const players = [...new Set(entries.flatMap(e => e.team.filter(p => p.member).map(p => p.name)))].sort((a, b) => a.split(" ").slice(-1)[0].localeCompare(b.split(" ").slice(-1)[0]));
+  if (state.player && !players.includes(state.player)) state.player = "";
+  const mine = e => !state.player || e.team.some(p => p.name === state.player);
+  const flat = entries.filter(mine).flatMap(e => e.matches.map(m => ({m, e})));
+  const liveMs = flat.filter(x => x.m.status === "live");
+  const nextMs = flat.filter(x => x.m.status === "upcoming").sort((a, b) => (a.m.at || "9").localeCompare(b.m.at || "9")).slice(0, 12);
+  const all = entries.reduce((a, e) => { const r = rec(e); a.v += r.v; a.d += r.d; return a; }, {v:0, d:0});
+  const podiums = entries.filter(e => e.rank && e.rank <= 3).length;
+  const members = data ? data.members : (t && t.members) || [];
+
+  let body = "";
+  const pods = entries.filter(e => e.rank && e.rank <= 3 && mine(e)).sort((a, b) => a.rank - b.rank || byComp(a.comp, b.comp));
+  if (pods.length) body += '<section class="section"><div class="section-head"><h2>Podiums</h2><span class="count">' + pods.length + '</span></div><div class="podiums">' +
+    pods.map(e => '<div class="podline pod g' + e.rank + '">' + medal(e.rank) + '<div><div class="team">' + teamNames(e) + "</div><small>" + compChip(e.comp) + " · sur " + e.n + (isSingles(e.comp) ? " joueurs" : " équipes") + "</small></div></div>").join("") + "</div></section>";
+  if (info.end >= today && !liveT) {
+    const mo = (data && data.modalities) || (t && t.modalities) || null;
+    const cur = mo && mo.currency === "EUR" ? " €" : "";
+    const lines = [];
+    if (mo && mo.regEnd) lines.push("<li><b>Inscriptions</b> " + (mo.online ? "en ligne sur Coral, " : "") + "jusqu'au " + esc(fmt(mo.regEnd.slice(0, 10), {weekday:"long", day:"numeric", month:"long"})) + "</li>");
+    if (mo && (mo.baseFee != null || mo.compFeeMin != null)) {
+      const parts = [];
+      if (mo.baseFee != null) parts.push(mo.baseFee + cur + " d'entrée");
+      if (mo.compFeeMin != null) parts.push(mo.compFeeMin === mo.compFeeMax ? mo.compFeeMin + cur + " par catégorie" : "de " + mo.compFeeMin + " à " + mo.compFeeMax + cur + " par catégorie selon le niveau");
+      lines.push("<li><b>Tarifs</b> " + parts.join(" + ") + "</li>");
+    }
+    const comps = data && data.competitions ? data.competitions.slice().sort((a, b) => byComp(a.name, b.name)) : [];
+    if (comps.length) lines.push("<li><b>Catégories</b> " + comps.map(c => compChip(c.name) + (c.start ? ' <span class="muted">' + esc(hour(c.start)) + "</span>" : "")).join(" &nbsp; ") + "</li>");
+    body += '<section class="section"><div class="section-head"><h2>S\'inscrire</h2></div>' +
+      (lines.length ? '<ul class="modal">' + lines.join("") + "</ul>" : '<p class="note">Les modalités détaillées sont dans le dossier du tournoi.</p>') +
+      '<div class="btns"><a class="btn primary" href="' + CORAL(code) + '" target="_blank" rel="noopener">S\'inscrire sur Coral ↗</a>' +
+      (info.info ? '<a class="btn" href="' + esc(info.info) + '" target="_blank" rel="noopener">Dossier du tournoi (PDF) ↗</a>' : "") + "</div></section>";
+  }
+  if (liveMs.length) body += '<section class="section"><div class="section-head"><span class="live-tag"><i></i>En ce moment</span><span class="count">' + liveMs.length + " match" + (liveMs.length > 1 ? "s" : "") + '</span></div><div class="matchlist">' + liveMs.map(x => matchRow(x.m, x.e)).join("") + "</div></section>";
+  if (nextMs.length) body += '<section class="section"><div class="section-head"><h2>Prochains matchs</h2></div><div class="matchlist">' + nextMs.map(x => matchRow(x.m, x.e)).join("") + "</div></section>";
+
+  if (entries.length) {
+    const order = [...new Set(entries.map(e => e.comp))].sort(byComp);
+    body += '<section class="section"><div class="section-head"><h2>Résultats</h2>' +
+      (players.length > 1 ? '<div class="controls"><select id="player" aria-label="Choisir un joueur"><option value="">Tous les joueurs LABAF</option>' + players.map(p => "<option" + (p === state.player ? " selected" : "") + ">" + esc(p) + "</option>").join("") + "</select></div>" : "") +
+      "</div>" +
+      order.map(c => {
+        const es = entries.filter(e => e.comp === c && mine(e)).sort((a, b) => (a.rank || 999) - (b.rank || 999));
+        if (!es.length) return "";
+        return '<div class="comp" style="--c:' + compVar(c) + '"><div class="comp-title"><h3>' + esc(compFr(c)) + "</h3><span>" + (es[0].n ? es[0].n + (isSingles(c) ? " joueurs" : " équipes") : "") + "</span></div>" +
+          es.map(e => {
+            const r = rec(e);
+            const rows = e.matches.map(m => '<tr><td class="ph">' + esc(roundLabel(m)) + "</td><td>" + who(m.opp) + '</td><td class="sc">' + esc(scoreText(m.score)) + '</td><td class="r"><span class="' + (m.status === "live" ? "L" : m.res) + '">' + (m.status === "live" ? "●" : m.res || "·") + '</span></td><td class="t">' + (m.at ? esc(dayShort(m.at) + " " + hour(m.at)) : "") + "</td></tr>").join("");
+            const pod = e.rank && e.rank <= 3;
+            return '<details class="e' + (pod ? " pod g" + e.rank : "") + '"' + (state.player || e.matches.some(m => m.status !== "done") ? " open" : "") + '><summary>' + (pod ? medal(e.rank) : '<div class="rank">' + rankHtml(e.rank) + "</div>") + '<div class="team">' + teamNames(e) + (pod ? '<br><span class="pod-label">' + MEDAL_NAME[e.rank] + "</span>" : "<small>" + esc(statusLine(e)) + "</small>") + '</div><div class="rec"><span class="v">' + r.v + " V</span>" + (r.n ? '<span class="n">' + r.n + " N</span>" : "") + '<span class="d">' + r.d + ' D</span></div></summary><div class="tbl"><table>' + rows + "</table></div></details>";
+          }).join("") + "</div>";
+      }).join("") + "</section>";
+  } else if (data && data.registrations && data.registrations.length) {
+    body += '<section class="section"><div class="section-head"><h2>Inscrits LABAF</h2><span class="count">' + data.registrations.length + ' joueur' + (data.registrations.length > 1 ? "s" : "") + '</span></div><div class="regs">' +
+      data.registrations.slice().sort((a, b) => a.name.localeCompare(b.name)).map(r => "<div><b>" + esc(r.name) + "</b><span>" + (r.comps.length ? r.comps.slice().sort(byComp).map(compChip).join(" ") : '<span class="muted">Catégorie non précisée sur Coral</span>') + "</span></div>").join("") +
+      '</div><p class="note">Les matchs apparaîtront ici dès le début du tournoi, avec les scores au fil de la journée.</p></section>';
+  } else if (members.length) {
+    body += '<section class="section"><div class="section-head"><h2>Inscrits LABAF</h2><span class="count">' + members.length + '</span></div><div class="regs">' + members.map(n => "<div><b>" + esc(n) + "</b></div>").join("") + '</div><p class="note">Le détail des catégories et les matchs apparaîtront ici à l\'approche du tournoi.</p></section>';
+  } else {
+    body += '<section class="section"><p class="empty">Aucun licencié LABAF inscrit pour le moment.</p></section>';
+  }
+
+  app.innerHTML =
+    '<a class="back" href="#">← Tous les tournois</a>' +
+    header(esc(info.category || "Tournoi")) +
+    '<section class="thead">' + (liveT ? '<span class="live-tag"><i></i>En direct</span>' : "") +
+      "<h1>" + esc(info.name) + "</h1>" +
+      '<div class="meta">' + lvlTag(info) + "<span>" + esc(dateRange(info.start, info.end)) + "</span><span>" + esc(info.city) + '</span><a href="' + CORAL(code) + '" target="_blank" rel="noopener">Voir sur Coral ↗</a>' + (info.info ? '<a href="' + esc(info.info) + '" target="_blank" rel="noopener">Dossier (PDF) ↗</a>' : "") + '</div>' +
+      (entries.length ? '<div class="stats"><div class="stat"><b>' + players.length + '</b><span>joueurs LABAF</span></div><div class="stat"><b>' + all.v + "–" + all.d + '</b><span>victoires–défaites</span></div>' + (podiums ? '<div class="stat"><b>' + podiums + "</b><span>podium" + (podiums > 1 ? "s" : "") + "</span></div>" : "") + "</div>" : "") +
+    "</section>" + body + footer(data && data.updated);
+
+  const sel = document.getElementById("player");
+  if (sel) sel.onchange = () => { state.player = sel.value; renderTournament(code); };
+}
+
+function footer(upd) {
+  return '<footer>Données publiques de Coral (Fédération Française de Baby-Foot). Seuls les joueurs avec une licence LABAF active sont suivis. ' +
+    "Actualisation automatique environ toutes les 5 minutes pendant les tournois" + (upd ? ", dernière lecture " + esc(ago(upd)) : "") + ". Heures de Paris.</footer>";
+}
+
+/* ---------- Navigation ---------- */
+const app = document.getElementById("app");
+async function route() {
+  const code = location.hash.replace(/^#/, "");
+  if (!INDEX) { try { INDEX = await getJson("data/index.json"); } catch(e) { app.innerHTML = '<p class="empty">Impossible de charger les tournois. Réessaie dans un instant.</p>'; return; } }
+  if (code && code !== "liste") await renderTournament(code); else renderHome();
+}
+window.addEventListener("hashchange", () => { state.player = ""; route().then(() => window.scrollTo(0, 0)); });
+route();
+if (!window.__LABAF_DATA__) setInterval(async () => {
+  try { INDEX = await getJson("data/index.json"); const y = window.scrollY; await route(); window.scrollTo(0, y); } catch(e) {}
+}, REFRESH_MS);
+})();
+</script>
+</body>
+</html>
