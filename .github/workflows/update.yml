@@ -1,4 +1,4 @@
-name: Mise à jour des tournois
+name: Mise à jour des tournois 
 
 on:
   schedule:
