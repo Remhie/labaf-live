@@ -299,13 +299,13 @@ function renderHome() {
   const live = all.filter(t => isLive(t, today));
   const nClub = t => (t.members || []).length;
 
-  const next = all.filter(t => t.start > today && nClub(t)).slice(0, 2);
+  const next = all.filter(t => t.end >= today && nClub(t)).slice(0, 2);
   const last = all.filter(t => t.end < today && nClub(t)).slice(-1);
   const features = live.length ? live : [...last, ...next].slice(0, 3);
 
   const featureCard = t => {
     const isL = isLive(t, today), past = t.end < today;
-    const top = isL ? '<span class="live-tag"><i></i>En direct</span>' : '<span class="eyebrow">' + (past ? "Dernier tournoi" : "Prochain tournoi LABAF") + "</span>";
+    const top = isL ? '<span class="live-tag"><i></i>En direct</span>' : '<span class="eyebrow">' + (past ? "Dernier tournoi" : t.start <= today ? "Aujourd'hui" : "Prochain tournoi LABAF") + "</span>";
     return '<a class="feature ' + t.level + (isL ? " live" : "") + '" href="#' + t.code + '">' + top +
       '<div class="t">' + esc(t.name) + '</div><div class="fm">' + esc(dateRange(t.start, t.end)) + " · " + esc(t.city) + "</div>" +
       '<div class="foot">' + lvlTag(t) + clubPill(nClub(t)) + '<span class="go">' + (isL ? "Suivre le direct →" : past ? "Voir les résultats →" : "Voir les inscrits →") + "</span></div></a>";
