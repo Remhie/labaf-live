@@ -276,7 +276,7 @@ const ago = iso => {
   if (h < 24) return "il y a " + h + " h";
   return "le " + new Intl.DateTimeFormat("fr-FR", {timeZone:TZ, day:"numeric", month:"short", hour:"2-digit", minute:"2-digit"}).format(new Date(iso));
 };
-const isLive = (t, today) => t.status !== "finished" && t.start <= today && today <= t.end;
+const isLive = (t, today) => t.status === "playing" && t.start <= today && today <= t.end && (t.members || []).length > 0;
 
 /* ---------- Données ---------- */
 async function getJson(url) {
